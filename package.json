@@ -7,9 +7,11 @@
   },
   "devDependencies": {
     "@types/node": "^20.12.7",
-    "vite": "^6.0.7"
+    "vite": "^6.1.1"
   },
   "dependencies": {
-    "axii": "^2.6.74"
+    "axii": "^3.0.5",
+    "axii-ui": "^2.0.1",
+    "axii-ui-theme-inc": "^4.1.1"
   }
 }
