@@ -45,8 +45,12 @@
       "description": "Learn how to use the official Axii UI component library",
       "resources": [
         {
-          "name": "Axii UI Components",
+          "name": "Axii UI Components Source",
           "url": "https://github.com/axiijs/ui/tree/main/packages/components"
+        },
+        {
+          "name": "Axii UI Components Demo",
+          "url": "https://github.com/axiijs/ui/tree/main/packages/playground/demo"
         }
       ],
       "examples": [
@@ -57,6 +61,14 @@
         {
           "name": "Table Component",
           "code": "import { RxList, atom, RenderContext } from 'axii';\nimport { Table, Button, Input } from 'axii-ui';\nimport { styleSystem as s } from 'axii-ui-theme-inc';\n\nexport function UsersTable({}, { createElement }: RenderContext) {\n  const searchTerm = atom('');\n  \n  const users = new RxList([\n    { id: 1, name: 'Alice', email: 'alice@example.com', role: 'Admin' },\n    { id: 2, name: 'Bob', email: 'bob@example.com', role: 'User' },\n    { id: 3, name: 'Charlie', email: 'charlie@example.com', role: 'User' }\n  ]);\n  \n  const filteredUsers = users.filter(user => {\n    const term = searchTerm().toLowerCase();\n    return !term || \n      user.name.toLowerCase().includes(term) || \n      user.email.toLowerCase().includes(term);\n  });\n  \n  const columns = [\n    { title: 'ID', dataIndex: 'id' },\n    { title: 'Name', dataIndex: 'name' },\n    { title: 'Email', dataIndex: 'email' },\n    { title: 'Role', dataIndex: 'role' },\n    {\n      title: 'Actions',\n      render: (_, user, index) => (\n        <Button \n          onClick={() => users.splice(index.raw, 1)}\n          style={s.textBox({ colorBox: true, color: s.colorScheme.error })}\n        >\n          Delete\n        </Button>\n      )\n    }\n  ];\n  \n  return (\n    <div style={s.layout.column({ gap: 16 })}>\n      <h2 style={s.heading()}>Users Management</h2>\n      \n      <div>\n        <Input \n          value={searchTerm} \n          placeholder=\"Search users...\" \n          style={{ width: '300px' }}\n        />\n      </div>\n      \n      <Table \n        dataSource={filteredUsers} \n        columns={columns} \n        style={s.table()}\n      />\n      \n      <div>Total Users: {filteredUsers.length}</div>\n    </div>\n  );\n}"
+        },
+        {
+          "name": "DatePicker Component",
+          "code": "import { atom, RenderContext } from 'axii';\nimport { DatePicker, Button } from 'axii-ui';\nimport { styleSystem as s } from 'axii-ui-theme-inc';\n\nexport function DatePickerExample({}, { createElement }: RenderContext) {\n  const selectedDate = atom(new Date());\n  const showDateInfo = atom(false);\n  \n  const handleDateChange = (date) => {\n    selectedDate(date);\n  };\n  \n  const formatDate = (date) => {\n    return date.toLocaleDateString('en-US', {\n      year: 'numeric',\n      month: 'long',\n      day: 'numeric'\n    });\n  };\n  \n  return (\n    <div style={s.layout.column({ gap: 16 })}>\n      <h2 style={s.heading()}>Date Picker Example</h2>\n      \n      <div style={s.layout.column({ gap: 8 })}>\n        <label>Select a date:</label>\n        <DatePicker \n          value={selectedDate} \n          onChange={handleDateChange}\n        />\n      </div>\n      \n      <Button onClick={() => showDateInfo(!showDateInfo())}>\n        {showDateInfo() ? 'Hide Date Info' : 'Show Date Info'}\n      </Button>\n      \n      {showDateInfo() && (\n        <div style={s.card({ padding: 16 })}>\n          <h3>Selected Date Information</h3>\n          <p>Date: {formatDate(selectedDate())}</p>\n          <p>Day of week: {selectedDate().toLocaleDateString('en-US', { weekday: 'long' })}</p>\n          <p>Is weekend: {[0, 6].includes(selectedDate().getDay()) ? 'Yes' : 'No'}</p>\n        </div>\n      )}\n    </div>\n  );\n}"
+        },
+        {
+          "name": "Tabs Component",
+          "code": "import { atom, RenderContext } from 'axii';\nimport { Tabs, Card } from 'axii-ui';\nimport { styleSystem as s } from 'axii-ui-theme-inc';\n\nexport function TabsExample({}, { createElement }: RenderContext) {\n  const activeTab = atom('1');\n  \n  const handleTabChange = (tabKey) => {\n    activeTab(tabKey);\n  };\n  \n  return (\n    <div style={s.layout.column({ gap: 16 })}>\n      <h2 style={s.heading()}>Tabs Example</h2>\n      \n      <Tabs \n        activeKey={activeTab} \n        onChange={handleTabChange}\n        items={[\n          {\n            key: '1',\n            label: 'Tab 1',\n            children: (\n              <Card style={s.card({ padding: 16 })}>\n                <h3>Tab 1 Content</h3>\n                <p>This is the content of the first tab.</p>\n              </Card>\n            )\n          },\n          {\n            key: '2',\n            label: 'Tab 2',\n            children: (\n              <Card style={s.card({ padding: 16 })}>\n                <h3>Tab 2 Content</h3>\n                <p>This is the content of the second tab.</p>\n              </Card>\n            )\n          },\n          {\n            key: '3',\n            label: 'Tab 3',\n            children: (\n              <Card style={s.card({ padding: 16 })}>\n                <h3>Tab 3 Content</h3>\n                <p>This is the content of the third tab.</p>\n              </Card>\n            )\n          }\n        ]}\n      />\n      \n      <div>Current active tab: {activeTab}</div>\n    </div>\n  );\n}"
         }
       ]
     },
